@@ -1,0 +1,1 @@
+This directory will including all implementation of dev and ops features such as ci/cd, docker, architecutre as code

@@ -1,0 +1,1 @@
+shared information between services such as reuse components
