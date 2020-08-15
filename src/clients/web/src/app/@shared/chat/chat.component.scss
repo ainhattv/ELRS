@@ -1,0 +1,20 @@
+.chat {
+    text-align: left;
+}
+
+.chat-input-form {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.chat-input-full-width {
+    width: 100%;
+}
+
+.message-list {
+    padding: 1rem 1rem 1rem 2rem;
+    overflow-y: auto;
+    height: 500px;
+}
