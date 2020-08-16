@@ -8,10 +8,12 @@ on:
     branches: [master]
     paths:
       - src/clients/web/
+      - .github/workflows/web-client.yml
   pull_request:
     branches: [master]
     paths:
       - src/clients/web/
+      - .github/workflows/web-client.yml
 
 jobs:
   build:

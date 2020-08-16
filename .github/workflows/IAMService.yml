@@ -5,10 +5,12 @@ on:
     branches: [master]
     paths:
       - src/apis/IAMService/
+      - .github/workflows/IAMService.yml
   pull_request:
     branches: [master]
     paths:
       - src/apis/IAMService/
+      - .github/workflows/IAMService.yml
 
 jobs:
   build-IAMService:
