@@ -16,13 +16,13 @@ namespace IAMService.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IOptions<AppSettings> _appSettings;
-        private readonly Logger<AuthService> _logger;
+        private readonly ILogger<AuthService> _logger;
 
         public AuthService(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IOptions<AppSettings> appSettings,
-            Logger<AuthService> logger
+            ILogger<AuthService> logger
         )
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(UserManager<ApplicationUser>));

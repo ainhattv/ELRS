@@ -18,11 +18,11 @@ namespace IAMService.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly Logger<AuthController> _logger;
+        private readonly ILogger<AuthController> _logger;
 
         public AuthController(
             AuthService authService,
-            Logger<AuthController> logger
+            ILogger<AuthController> logger
             )
         {
             _authService = authService ?? throw new ArgumentNullException(nameof(SignInManager<ApplicationUser>));
