@@ -7,13 +7,11 @@ import { map } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ChatService {
-
   messages: Subject<any>;
 
   // Our constructor calls our wsService connect method
   constructor(private wsService: WebsocketService) {
-    this.messages = wsService
-      .connect();
+    this.messages = wsService.connect();
   }
 
   // Our simplified interface for sending
@@ -21,5 +19,4 @@ export class ChatService {
   public sendMsg(msg: any) {
     this.messages.next(msg);
   }
-
 }

@@ -11,9 +11,6 @@ import { NbCardModule } from '@nebular/theme';
 import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
-    exports: [
-        NbCardModule,
-        MatButtonModule
-    ],
+  exports: [NbCardModule, MatButtonModule],
 })
-export class NebularModule { }
+export class NebularModule {}
