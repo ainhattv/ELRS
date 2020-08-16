@@ -1,0 +1,28 @@
+name: .NET Core CI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - src/apis/IAMService/
+  pull_request:
+    branches: [master]
+    paths:
+      - src/apis/IAMService/
+
+jobs:
+  build-IAMService:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.301
+      - name: Install dependencies
+        run: dotnet restore src/apis/IAMService/IAMService/IAMService.csproj
+      - name: Build
+        run: dotnet build src/apis/IAMService/IAMService/IAMService.csproj --configuration Release --no-restore
+      - name: Test
+        run: dotnet test src/apis/IAMService/IAMService/IAMService.csproj --no-restore --verbosity normal
