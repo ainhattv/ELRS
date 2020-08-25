@@ -46,5 +46,51 @@ namespace IAMService.Services
 
             return (result, authResponse);
         }
+
+        public async Task<(SignInResult, AuthenticateResponse)> SignInAsync(UserModel userModel)
+        {
+            var user = await _userManager.FindByEmailAsync(userModel.UserName);
+
+            if (user == null)
+            {
+                throw new ApplicationException($"User {userModel.UserName} is invalid");
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, userModel.Password, false);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation($"User {userModel.UserName} has loged in");
+            }
+            else
+            {
+                return (result, null);
+            }
+
+            var token = JwtTokenProvider.GenerateToken(_appSettings.Value.Secret, user.Id);
+
+            var authResponse = new AuthenticateResponse(user, token);
+
+            return (result, authResponse);
+        }
+
+        public async Task SignOutAsync()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> ChangePasswordAsync(UserChangePasswordModel userModel)
+        {
+            var user = await _userManager.FindByEmailAsync(userModel.UserName);
+
+            if (user == null)
+            {
+                throw new ApplicationException($"User {userModel.UserName} is invalid");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, userModel.Password, userModel.NewPassword);
+
+            return result;
+        }
     }
 }

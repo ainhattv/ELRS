@@ -27,7 +27,7 @@ export class ShellComponent implements OnInit {
 
   get username(): string | null {
     const credentials = this.credentialsService.credentials;
-    return credentials ? credentials.username : null;
+    return credentials ? credentials.userName : null;
   }
 
   get isMobile(): boolean {

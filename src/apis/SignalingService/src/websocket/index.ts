@@ -12,10 +12,11 @@ export async function register(server: any) {
     await registerMiddlewares(wss);
 
     wss.on(SOCKET_ACTIONS.ON_CONNECT, async (socket: any) => {
+        console.debug(`New connection: ${socket.id}`);
         await Hanlders.onConnect(socket);
 
         socket.on(SOCKET_ACTIONS.ON_MESSAGE, async (msg: any) => {
-            console.log('message: ' + msg);
+            Hanlders.onMessage(socket, msg);
         });
 
         socket.on(SOCKET_ACTIONS.ON_DISCONNECT, async () => {

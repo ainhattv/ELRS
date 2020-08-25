@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { CredentialsService } from '../auth/credentials.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,10 +12,18 @@ export class WebsocketService {
   // Our socket connection
   private socket: any;
 
-  constructor() {}
+  constructor(
+    private credentialsService: CredentialsService
+  ) { }
 
   connect(): Subject<MessageEvent> {
-    this.socket = io(environment.wsUrl + '?token=abc&userId=1', {
+    if (!this.credentialsService.isAuthenticated) {
+      return;
+    }
+
+    const token = this.credentialsService.credentials.token;
+
+    this.socket = io(environment.wsUrl + `?token=${token}&userId=10`, {
       reconnection: true, // whether to reconnect automatically
       reconnectionAttempts: Infinity, // number of reconnection attempts before giving up
       reconnectionDelay: 1000, // how long to initially wait before attempting a new reconnection
@@ -25,7 +34,7 @@ export class WebsocketService {
 
     let observable = new Observable((observer) => {
       this.socket.on('message', (data: any) => {
-        this.socket.emit('chat message', JSON.stringify('Client received !'));
+        // console.log('message:', data);
         observer.next(data);
       });
 
@@ -34,12 +43,12 @@ export class WebsocketService {
       };
     });
 
-    let observer = {
+    let newObserver = {
       next: (data: Object) => {
-        this.socket.emit('message', JSON.stringify(data));
+        this.socket.emit('message', data);
       },
     };
 
-    return Subject.create(observer, observable);
+    return Subject.create(newObserver, observable);
   }
 }

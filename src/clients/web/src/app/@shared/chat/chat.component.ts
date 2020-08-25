@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IMessageModel } from '@shared/message/message.component';
+import { ChatService } from '../../services/chat-service.service';
 
 export interface IChatModel {
   roomId: string;
@@ -18,44 +19,66 @@ export class ChatComponent implements OnInit {
   public editorString: string;
 
   public chatModel: IChatModel = {
-    roomId: '123',
+    roomId: 'general',
     roomName: 'Chat Room 1',
     roomTitle: 'Chat Room title',
     roomThumailUrl: 'https://material.angular.io/assets/img/examples/shiba1.jpg',
-    messages: [
-      {
-        messageId: '1',
-        from: 'Developer',
-        fromThumnailUrl: 'https://material.angular.io/assets/img/examples/shiba1.jpg',
-        messageType: 'string',
-        message: 'The package ngx-deploy-docker is included as both a dev',
-        createdDate: 'today',
-        editedDate: null,
-      },
-    ],
+    messages: [],
   };
 
-  constructor() {}
+  constructor(
+    private chatService: ChatService
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+    this.subscribeRoomChanel();
+  }
 
   public pushMessage() {
-    var message: IMessageModel = {
-      messageId: '2',
-      from: 'Developer',
-      fromThumnailUrl: 'https://material.angular.io/assets/img/examples/shiba1.jpg',
-      messageType: 'string',
-      message: this.editorString,
-      createdDate: 'today',
-      editedDate: null,
-    };
+    var newmessage: IMessageModel = this.createMessage(this.editorString);
 
-    this.chatModel.messages.push(message);
+    this.chatModel.messages.push(newmessage);
+    this.chatService.sendMsg(newmessage);
 
     this.cleanInput();
   }
 
+  private subscribeRoomChanel(): void {
+    this.chatService.messages.subscribe(message => {
+
+      if (typeof (message) == 'string') {
+        message = JSON.parse(message);
+      }
+
+      this.chatModel.messages.push(message);
+    })
+  }
+
+  private createMessage(messageString: string): IMessageModel {
+    return {
+      messageId: '2',
+      from: 'Developer',
+      fromThumnailUrl: 'https://material.angular.io/assets/img/examples/shiba1.jpg',
+      messageType: 'string',
+      message: messageString,
+      createdDate: 'today',
+      editedDate: null,
+      roomId: 'general'
+    };
+  }
+
   private cleanInput() {
     this.editorString = null;
+  }
+
+  /**
+   * Push message with enter key
+   * @param event KeyboardEvent
+   */
+  keyPress(event: KeyboardEvent) {
+    // if (event.keyCode == 13) {
+    //   this.pushMessage();
+    // }
   }
 }

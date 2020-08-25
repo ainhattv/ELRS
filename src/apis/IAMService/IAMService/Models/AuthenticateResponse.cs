@@ -5,14 +5,16 @@ namespace IAMService.Models
     public class AuthenticateResponse
     {
         public string Id { get; set; }
-        public string Username { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
         public string Token { get; set; }
 
 
         public AuthenticateResponse(ApplicationUser user, string token)
         {
             Id = user.Id;
-            Username = user.UserName;
+            UserName = user.UserName;
+            Email = user.Email;
             Token = token;
         }
     }

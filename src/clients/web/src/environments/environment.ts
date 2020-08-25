@@ -18,6 +18,7 @@ export const environment = {
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US'],
   wsUrl: 'ws://localhost:3000/',
+  authApi: 'http://localhost:5000/'
 };
 
 /*

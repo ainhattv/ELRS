@@ -1,13 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 import { Credentials, CredentialsService } from './credentials.service';
+import { AUTH_APIS } from './apis';
+import { Logger } from '@core';
 
 export interface LoginContext {
   username: string;
   password: string;
   remember?: boolean;
 }
+
+const logger = new Logger('AuthenticationService');
 
 /**
  * Provides a base for authentication workflow.
@@ -17,7 +22,10 @@ export interface LoginContext {
   providedIn: 'root',
 })
 export class AuthenticationService {
-  constructor(private credentialsService: CredentialsService) {}
+  constructor(
+    private credentialsService: CredentialsService,
+    private httpClient: HttpClient
+  ) { }
 
   /**
    * Authenticates the user.
@@ -26,12 +34,7 @@ export class AuthenticationService {
    */
   login(context: LoginContext): Observable<Credentials> {
     // Replace by proper authentication call
-    const data = {
-      username: context.username,
-      token: '123456',
-    };
-    this.credentialsService.setCredentials(data, context.remember);
-    return of(data);
+    return this.signInApi(context.username, context.password).pipe();
   }
 
   /**
@@ -43,4 +46,14 @@ export class AuthenticationService {
     this.credentialsService.setCredentials();
     return of(true);
   }
+
+  private signInApi(userName: string, password: string): Observable<Credentials> {
+    const body = {
+      userName: userName,
+      password: password
+    }
+
+    return this.httpClient.post<Credentials>(AUTH_APIS.SIGNIN_API, body);
+  }
+
 }

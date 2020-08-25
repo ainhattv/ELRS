@@ -8,6 +8,7 @@ export interface IMessageModel {
   message: string;
   createdDate: string;
   editedDate: string;
+  roomId: string;
 }
 
 @Component({
@@ -18,7 +19,7 @@ export interface IMessageModel {
 export class MessageComponent implements OnInit {
   @Input() message: IMessageModel;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

@@ -6,5 +6,5 @@ export const users: Array<User> = [
 ]
 
 export const rooms: Array<Room> = [
-    new Room('1', 'room 1', 'my room', users)
+    new Room('general', 'room 1', 'my room', users)
 ]

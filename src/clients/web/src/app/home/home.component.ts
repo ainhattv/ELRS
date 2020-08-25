@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   quote: string | undefined;
   isLoading = false;
 
-  constructor(private quoteService: QuoteService, private chatService: ChatService) {}
+  constructor(private quoteService: QuoteService, private chatService: ChatService) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -27,11 +27,5 @@ export class HomeComponent implements OnInit {
       .subscribe((quote: string) => {
         this.quote = quote;
       });
-
-    this.chatService.messages.subscribe((msg: any) => {
-      console.log(msg);
-    });
-
-    this.chatService.sendMsg('Client call server !');
   }
 }

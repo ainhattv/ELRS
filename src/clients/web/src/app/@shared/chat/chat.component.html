@@ -19,7 +19,7 @@
   <div class="chat-input-form">
     <mat-form-field appearance="outline" class="chat-input-full-width">
       <mat-label>Leave a comment</mat-label>
-      <textarea matInput [(ngModel)]="editorString"></textarea>
+      <textarea matInput [(ngModel)]="editorString" (keypress)="keyPress($event)"></textarea>
     </mat-form-field>
     <button [disabled]="!this.editorString" type="submit" mat-stroked-button color="primary" (click)="pushMessage()">
       Send

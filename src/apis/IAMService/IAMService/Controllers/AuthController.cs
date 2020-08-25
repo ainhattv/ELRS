@@ -21,56 +21,62 @@ namespace IAMService.Controllers
         private readonly ILogger<AuthController> _logger;
 
         public AuthController(
-            AuthService authService,
+            IAuthService authService,
             ILogger<AuthController> logger
             )
         {
-            _authService = authService ?? throw new ArgumentNullException(nameof(SignInManager<ApplicationUser>));
+            _authService = authService ?? throw new ArgumentNullException(nameof(IAuthService));
             _logger = logger ?? throw new ArgumentNullException(nameof(Logger<AuthController>));
         }
 
-        [HttpPost("/register")]
+        [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(UserModel userModel)
         {
-            if (ModelState.IsValid)
-            {
-                var (identityResult, authResult) = await _authService.RegisterAsync(userModel);
-                if (identityResult.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-                    return Ok(authResult);
-                }
+            var (identityResult, authResult) = await _authService.RegisterAsync(userModel);
 
-                return Ok(identityResult.Errors);
+            if (identityResult.Succeeded)
+            {
+                return Ok(authResult);
             }
 
-            return Ok();
+            return BadRequest(identityResult.Errors);
         }
 
-        [HttpPost("/login")]
-        public async Task<IActionResult> LoginAsync(UserModel userModel)
+        [HttpPost("signIn")]
+        public async Task<IActionResult> SignInAsync(UserModel userModel)
         {
-            if (ModelState.IsValid)
-            {
+            _logger.LogInformation($"User {userModel.UserName} request to login");
 
+            var (signInResult, authResponse) = await _authService.SignInAsync(userModel);
+
+            if (signInResult.Succeeded)
+            {
+                return Ok(authResponse);
             }
 
-            return Ok();
+            return BadRequest(signInResult);
         }
 
-        [HttpPost("/logout")]
+        [HttpPost("signOut")]
         [Authorize]
-        public async Task<IActionResult> LogoutAsync()
+        public async Task<IActionResult> SignOutAsync()
         {
-
+            await _authService.SignOutAsync();
             return Ok();
         }
 
-        [HttpPost("/change-password")]
+        [HttpPost("changePassword")]
         [Authorize]
         public async Task<IActionResult> ChangePasswordAsync(UserChangePasswordModel userModel)
         {
-            return Ok();
+            var identityResult = await _authService.ChangePasswordAsync(userModel);
+
+            if (identityResult.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest(identityResult);
         }
     }
 }
