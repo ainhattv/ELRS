@@ -1,0 +1,29 @@
+version: "3.4"
+
+services:
+  iam-service:
+    build:
+      context: ../src/apis/IAMService/IAMService
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+
+  signaling-service:
+    build:
+      context: ../src/apis/SignalingService
+      dockerfile: Dockerfile
+    ports:
+      - "5003:3000"
+
+  web-client:
+    build:
+      context: ../src/clients/web
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    environment:
+      - SIGNALING_SERVICE=http://signaling-service
+      - IAM_SERVICE=http://iam-service
+    depends_on:
+      - iam-service
+      - signaling-service
