@@ -26,7 +26,7 @@ import { NebularModule } from './nebular.module';
     FormsModule,
     HttpClientModule,
     TranslateModule.forRoot(),
-    NbThemeModule.forRoot(),
+    NbThemeModule,
     BrowserAnimationsModule,
     MaterialModule,
     NebularModule,

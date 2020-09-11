@@ -21,6 +21,7 @@ using IAMService.Services;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using IAMService.constants;
 
 namespace IAMService
 {
@@ -39,14 +40,14 @@ namespace IAMService
             services.AddScoped<IAuthService, AuthService>();
 
             // configure strongly typed settings objects
-            var appSettingsSection = Configuration.GetSection("AppSettings");
+            var appSettingsSection = Configuration.GetSection(Constant.APPSETTINGS_KEY);
             services.Configure<AppSettings>(appSettingsSection);
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString(Constant.CONNECTIONSTRING_KEY)));
 
             services.ConfigIdentity();
 
@@ -140,8 +141,7 @@ namespace IAMService
                 options.Lockout.AllowedForNewUsers = true;
 
                 // User settings.
-                options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.AllowedUserNameCharacters = Constant.PASSWORD_CHARS;
                 options.User.RequireUniqueEmail = false;
             });
         }

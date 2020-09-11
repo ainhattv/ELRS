@@ -11,6 +11,8 @@ namespace IAMService.Entities
 
         public string OrganizationId { get; set; }
 
+        public Organization Organization { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

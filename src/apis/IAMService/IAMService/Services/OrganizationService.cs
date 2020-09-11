@@ -1,6 +1,6 @@
 namespace IAMService.Services
 {
-    public class UserService
+    public class OrganizationService
     {
         
     }

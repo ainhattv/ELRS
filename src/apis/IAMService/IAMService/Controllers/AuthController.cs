@@ -30,7 +30,7 @@ namespace IAMService.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync(UserModel userModel)
+        public async Task<IActionResult> RegisterAsync(UserLoginModel userModel)
         {
             var (identityResult, authResult) = await _authService.RegisterAsync(userModel);
 
@@ -43,7 +43,7 @@ namespace IAMService.Controllers
         }
 
         [HttpPost("signIn")]
-        public async Task<IActionResult> SignInAsync(UserModel userModel)
+        public async Task<IActionResult> SignInAsync(UserLoginModel userModel)
         {
             _logger.LogInformation($"User {userModel.UserName} request to login");
 

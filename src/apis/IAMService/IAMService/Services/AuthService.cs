@@ -31,7 +31,7 @@ namespace IAMService.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(Logger<AuthService>));
         }
 
-        public async Task<(IdentityResult, AuthenticateResponse)> RegisterAsync(UserModel userModel)
+        public async Task<(IdentityResult, AuthenticateResponse)> RegisterAsync(UserLoginModel userModel)
         {
             var user = new ApplicationUser { UserName = userModel.UserName, Email = userModel.UserName };
             var result = await _userManager.CreateAsync(user, userModel.Password);
@@ -47,7 +47,7 @@ namespace IAMService.Services
             return (result, authResponse);
         }
 
-        public async Task<(SignInResult, AuthenticateResponse)> SignInAsync(UserModel userModel)
+        public async Task<(SignInResult, AuthenticateResponse)> SignInAsync(UserLoginModel userModel)
         {
             var user = await _userManager.FindByEmailAsync(userModel.UserName);
 

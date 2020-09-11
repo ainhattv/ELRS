@@ -17,7 +17,7 @@ export const environment = {
   serverUrl: '/api',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US'],
-  wsUrl: 'ws://localhost:3000/',
+  wsUrl:'ws://localhost:5003/',
   authApi: 'http://localhost:5000/'
 };
 

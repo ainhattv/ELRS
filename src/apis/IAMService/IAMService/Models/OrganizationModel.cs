@@ -1,14 +1,11 @@
 using System.Collections.Generic;
 
-namespace IAMService.Entities
+namespace IAMService.Models
 {
-    public class Organization : EntitiesBase
+    public class OrganizationModel
     {
-        public Organization() : base()
-        {
-
-        }
-
+        public string Id { get; set; }
+        
         public string Name { get; set; }
 
         public string Address { get; set; }
@@ -17,6 +14,6 @@ namespace IAMService.Entities
 
         public decimal PhoneNumber { get; set; }
 
-        public virtual ICollection<ApplicationUser> Users { get; set; }
+        public IEnumerable<UserModel> Users { get; set; }
     }
 }
